@@ -1,7 +1,7 @@
 # funcion_promedio_temperaturas.py
 """
 Función para calcular el promedio de temperaturas por ciudad y semana.
-Autor: Tu Nombre
+Autor: Christopher Rueda
 """
 
 def calcular_promedios(ciudades, temperaturas):
