@@ -1,39 +1,61 @@
-# Programa: Promedio de temperaturas por ciudad y semana
+# funcion_promedio_temperaturas.py
+"""
+Función para calcular el promedio de temperaturas por ciudad y semana.
+Autor: Tu Nombre
+"""
 
-# Ciudades
-ciudades = ["Quito", "Guayaquil", "Cuenca"]
+def calcular_promedios(ciudades, temperaturas):
+    """
+    Calcula los promedios de temperatura por ciudad y por semana.
 
-# Días de la semana (7)
-dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+    Parámetros:
+        ciudades (list of str): nombres de las ciudades.
+        temperaturas (list): matriz 3D [ciudad][semana][día].
 
-# Semanas (ejemplo: 2 semanas)
-num_semanas = 2
+    Retorna:
+        dict: { ciudad: [prom_sem1, prom_sem2, ...], ... }
+    """
+    promedios = {}
 
-# Creamos la matriz 3D [ciudad][semana][día]
-# Para simplificar, usamos valores fijos de temperaturas (puedes poner valores reales o aleatorios)
-matriz_temperaturas = [
-    [   # Quito
-        [20, 22, 19, 18, 21, 23, 20],  # Semana 1
-        [21, 22, 20, 19, 18, 21, 22]   # Semana 2
-    ],
-    [   # Guayaquil
-        [28, 30, 31, 29, 28, 27, 30],  # Semana 1
-        [29, 30, 32, 31, 30, 29, 28]   # Semana 2
-    ],
-    [   # Cuenca
-        [15, 17, 16, 15, 14, 18, 16],  # Semana 1
-        [16, 17, 15, 14, 15, 17, 18]   # Semana 2
+    for i, ciudad in enumerate(ciudades):
+        promedios[ciudad] = []
+        # temperaturas[i] es la lista de semanas para la ciudad i
+        for semana in temperaturas[i]:
+            if not semana:  # lista vacía -> evitar división por 0
+                promedios[ciudad].append(None)
+            else:
+                promedio_semana = sum(semana) / len(semana)
+                promedios[ciudad].append(promedio_semana)
+
+    return promedios
+
+
+# Prueba rápida: datos de ejemplo (3 ciudades, 4 semanas, 7 días)
+if __name__ == "__main__":
+    ciudades = ["Quito", "Guayaquil", "Cuenca"]
+    temperaturas = [
+        [  # Quito - 4 semanas
+            [20,22,19,18,21,23,20],
+            [21,22,20,19,18,21,22],
+            [19,21,20,20,22,23,21],
+            [20,21,19,18,22,22,21]
+        ],
+        [  # Guayaquil
+            [28,30,31,29,28,27,30],
+            [29,30,32,31,30,29,28],
+            [30,31,29,30,32,31,29],
+            [28,29,30,28,27,29,30]
+        ],
+        [  # Cuenca
+            [15,17,16,15,14,18,16],
+            [16,17,15,14,15,17,18],
+            [15,16,15,16,17,18,16],
+            [14,15,16,14,15,17,16]
+        ]
     ]
-]
 
-# Cálculo de promedios usando bucles anidados
-for i in range(len(ciudades)):  # Itera sobre ciudades
-    ciudad = ciudades[i]
-    print(f"\n📍 Ciudad: {ciudad}")
-    for j in range(num_semanas):  # Itera sobre semanas
-        semana = j + 1
-        suma = 0
-        for k in range(len(dias)):  # Itera sobre días
-            suma += matriz_temperaturas[i][j][k]
-        promedio = suma / len(dias)
-        print(f"   Semana {semana}: Promedio de temperatura = {promedio:.2f}°C")
+    resultados = calcular_promedios(ciudades, temperaturas)
+    for ciudad, proms in resultados.items():
+        print(f"\nCiudad: {ciudad}")
+        for idx, prom in enumerate(proms, start=1):
+            print(f"  Semana {idx}: {prom:.2f}°C")
